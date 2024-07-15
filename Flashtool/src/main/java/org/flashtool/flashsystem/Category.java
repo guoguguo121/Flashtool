@@ -35,31 +35,31 @@ public class Category implements Comparable<Category> {
 		  }
 		  
 		  public void addEntry(BundleEntry f) throws SinFileException {
-			  //System.out.println(f.getInternal()+" + "+f.getName());
-			  entries.add(f);
-			  if (f.getName().endsWith(".sin")) issin=true;
-			  if (f.getName().endsWith(".ta")) ista=true;
-			  if (f.getName().contains("boot_delivery")) isbootdelivery = true;
-			  if (f.getName().contains("partition_delivery")) ispartitiondelivery = true;
-			  if (issin) {
-				  if (f.getName().toUpperCase().contains("PARTITION")) {
-						ispartition = true;
-				  }
-				  else if (f.getName().toUpperCase().contains("SECRO")) {
-						issecro = true;
-				  }
-				  else if (f.getName().toUpperCase().contains("PRELOAD")) {
-					  	ispreload = true;
-				  }
-				  else if (f.getName().toUpperCase().contains("ELABEL")) {
-						iselabel = true;
-				  }
-				  else if (f.getName().toUpperCase().contains("SYSTEM") || f.getName().toUpperCase().contains("USER") || f.getName().toUpperCase().contains("OEM") || f.getName().toUpperCase().contains("VENDOR") || f.getName().toUpperCase().contains("B2B") || f.getName().toUpperCase().contains("SSD")) {
-						issystemuser = true;
-				  }
-				  else
-					  issw = true;
-			  }
+			entries.add(f);
+			update(f.getName());
+		}
+	
+		private void update(String fileName) {
+			if (fileName.endsWith(".sin")) issin = true;
+			if (fileName.endsWith(".ta")) ista = true;
+			if (fileName.contains("boot_delivery")) isbootdelivery = true;
+			if (fileName.contains("partition_delivery")) ispartitiondelivery = true;
+	
+			if (issin) {
+				if (fileName.toUpperCase().contains("PARTITION")) {
+					ispartition = true;
+				} else if (fileName.toUpperCase().contains("SECRO")) {
+					issecro = true;
+				} else if (fileName.toUpperCase().contains("PRELOAD")) {
+					ispreload = true;
+				} else if (fileName.toUpperCase().contains("ELABEL")) {
+					iselabel = true;
+				} else if (fileName.toUpperCase().contains("SYSTEM") || fileName.toUpperCase().contains("USER") || fileName.toUpperCase().contains("OEM") || fileName.toUpperCase().contains("VENDOR") || fileName.toUpperCase().contains("B2B") || fileName.toUpperCase().contains("SSD")) {
+					issystemuser = true;
+				} else {
+					issw = true;
+				}
+			}
 		  }
 
 		  public boolean isPartition() {

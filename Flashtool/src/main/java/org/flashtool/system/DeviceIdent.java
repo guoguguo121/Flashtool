@@ -48,13 +48,13 @@ public class DeviceIdent {
 		return devicepath;
 	}
 	
-	public void setDriver(String desc, int maj, int min,int mil, int mic) {
-		driverdesc = desc;
-		drivermajor=maj;
-		driverminor=min;
-		drivermili=mil;
-		drivermicro=mic;
-	}
+	public void setDriver(Driver driver) {
+        this.driverdesc = driver.getDescription();
+        this.drivermajor = driver.getMajor();
+        this.driverminor = driver.getMinor();
+        this.drivermili = driver.getMili();
+        this.drivermicro = driver.getMicro();
+    }
 	
 	public String getDriverDescription() {
 		return driverdesc;

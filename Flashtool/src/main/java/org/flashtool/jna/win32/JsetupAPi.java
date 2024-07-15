@@ -135,35 +135,34 @@ public class JsetupAPi {
 		}
 		return "";
 	}
-
-	public static String getDevicePath(HDEVINFO hDevInfo, SP_DEVINFO_DATA DeviceInfoData) {
-		String devpath = "";
-        SP_DEVICE_INTERFACE_DATA DeviceInterfaceData = new SP_DEVICE_INTERFACE_DATA();
-        DeviceInterfaceData.cbSize = DeviceInterfaceData.size();
-        /* Query the device using the index to get the interface data */
-        int index=0;
-        do {
-        	int result = setupapi.SetupDiEnumDeviceInterfaces(hDevInfo, DeviceInfoData, USBGuid,index, DeviceInterfaceData);
-        	if (result == 0) {
-        		break;        		
-        	}
-    		/* A successful query was made, use it to get the detailed data of the device */
-    	    IntByReference reqlength = new IntByReference();
-    	    /* Obtain the length of the detailed data structure, and then allocate space and retrieve it */
-    	    result = setupapi.SetupDiGetDeviceInterfaceDetail(hDevInfo, DeviceInterfaceData, null, 0, reqlength, null);
-    	    // Create SP_DEVICE_INTERFACE_DETAIL_DATA structure and set appropriate length for device Path */
-    	    SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData      = new SP_DEVICE_INTERFACE_DETAIL_DATA(reqlength.getValue());
-    	    result = setupapi.SetupDiGetDeviceInterfaceDetail(hDevInfo, DeviceInterfaceData, DeviceInterfaceDetailData, reqlength.getValue(), reqlength, null);
-    	    devpath = Native.toString(DeviceInterfaceDetailData.devicePath);
-    	    if (devpath.length()==0) {
-        	    SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailDataDummy      = new SP_DEVICE_INTERFACE_DETAIL_DATA();
-        	    DeviceInterfaceDetailData.cbSize=DeviceInterfaceDetailDataDummy.size();
-        	    result = setupapi.SetupDiGetDeviceInterfaceDetail(hDevInfo, DeviceInterfaceData, DeviceInterfaceDetailData, reqlength.getValue(), reqlength, null);
-        	    devpath = Native.toString(DeviceInterfaceDetailData.devicePath);
-    	    }
-            index++;
-        } while (true);
-        return devpath;
+	public static String getDevicePath(HDEVINFO hInfo, SP_DEVINFO_DATA infoData) {
+		String path = "";
+		SP_DEVICE_INTERFACE_DATA interfaceData = new SP_DEVICE_INTERFACE_DATA();
+		interfaceData.cbSize = interfaceData.size();
+		
+		int index = 0;
+		do {
+			int result = setupapi.SetupDiEnumDeviceInterfaces(hInfo, infoData, USBGuid, index, interfaceData);
+			if (result == 0) {
+				break;
+			}
+			
+			IntByReference reqLength = new IntByReference();
+			result = setupapi.SetupDiGetDeviceInterfaceDetail(hInfo, interfaceData, null, 0, reqLength, null);
+			
+			SP_DEVICE_INTERFACE_DETAIL_DATA detailData = new SP_DEVICE_INTERFACE_DETAIL_DATA(reqLength.getValue());
+			result = setupapi.SetupDiGetDeviceInterfaceDetail(hInfo, interfaceData, detailData, reqLength.getValue(), reqLength, null);
+			
+			path = Native.toString(detailData.devicePath);
+			if (path.isEmpty()) {
+				SP_DEVICE_INTERFACE_DETAIL_DATA detailDataDummy = new SP_DEVICE_INTERFACE_DETAIL_DATA();
+				detailData.cbSize = detailDataDummy.size();
+				result = setupapi.SetupDiGetDeviceInterfaceDetail(hInfo, interfaceData, detailData, reqLength.getValue(), reqLength, null);
+				path = Native.toString(detailData.devicePath);
+			}
+			index++;
+		} while (true);
+		
+		return path;
 	}
-	
 }

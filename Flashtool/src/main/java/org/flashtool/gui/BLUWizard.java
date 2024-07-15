@@ -66,6 +66,7 @@ public class BLUWizard extends Dialog {
 	 * Open the dialog.
 	 * @return the result
 	 */
+	
 	public Object open(String serial, String imei, String ulcode,Flasher flash, String action) {
 		_action = action;
 		_flash = flash;

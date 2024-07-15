@@ -207,31 +207,12 @@ public class AREntry
     {
       return false;
     }
-    if (this.fileOffset != other.fileOffset)
-    {
-      return false;
-    }
-    if (this.gid != other.gid)
-    {
-      return false;
-    }
-    if (this.mode != other.mode)
-    {
-      return false;
-    }
-    if (this.modificationTime != other.modificationTime)
-    {
-      return false;
-    }
-    if (this.size != other.size)
-    {
-      return false;
-    }
-    if (this.uid != other.uid)
-    {
-      return false;
-    }
-    return true;
+     return this.fileOffset == other.fileOffset &&
+           this.gid == other.gid &&
+           this.mode == other.mode &&
+           this.modificationTime == other.modificationTime &&
+           this.size == other.size &&
+           this.uid == other.uid;
   }
 
   /**

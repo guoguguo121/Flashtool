@@ -324,7 +324,8 @@ public class Devices  {
 								int minor = BytesUtil.getInt(Arrays.copyOfRange(Longs.toByteArray(DriversInfoData.DriverVersion), 2, 4));
 								int mili = BytesUtil.getInt(Arrays.copyOfRange(Longs.toByteArray(DriversInfoData.DriverVersion), 4, 6));
 								int micro = BytesUtil.getInt(Arrays.copyOfRange(Longs.toByteArray(DriversInfoData.DriverVersion), 6, 8));
-								id.setDriver(desc, major, minor, mili, micro);
+								Driver driver= new Driver(desc, major, minor, mili, micro);
+                                id.setDriver(driver);
 							}
 							driverindex++;
 						} while (DriversInfoData!=null);
